@@ -1,33 +1,41 @@
+
 pipeline {
     agent any
+
+    environment {
+        DOCKER_HOST = 'tcp://host.docker.internal:2375'
+        IMAGE_NAME = 'rafi-jenkins-demo'
+        IMAGE_TAG = '1.0'
+    }
 
     stages {
         stage('Checkout') {
             steps {
-                echo 'Source code is checked out from GitHub'
+                checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Building the application...'
+                sh 'docker version'
+                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
             }
         }
 
-        stage('Test') {
+        stage('Verify Image') {
             steps {
-                echo 'Running tests...'
+                sh 'docker images ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Docker image built successfully!'
         }
 
         failure {
-            echo 'Pipeline failed!'
+            echo 'Pipeline failed. Check the logs.'
         }
     }
 }
