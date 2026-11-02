@@ -5,7 +5,7 @@ pipeline {
     environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
         IMAGE_NAME = 'rafi-jenkins-demo'
-        IMAGE_TAG = '1.0'
+        IMAGE_TAG = '2.0'
     }
 
     stages {
