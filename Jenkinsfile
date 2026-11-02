@@ -4,8 +4,9 @@ pipeline {
 
     environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
+        KUBECONFIG = '/var/jenkins_home/.kube/config'
         IMAGE_NAME = 'rafi-jenkins-demo'
-        IMAGE_TAG = '2.0'
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -27,11 +28,19 @@ pipeline {
                 sh 'docker images ${IMAGE_NAME}:${IMAGE_TAG}'
             }
         }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh 'kubectl get nodes'
+                sh 'kubectl set image deployment/rafi-jenkins-demo website=${IMAGE_NAME}:${IMAGE_TAG}'
+                sh 'kubectl rollout status deployment/rafi-jenkins-demo'
+            }
+        }
     }
 
     post {
         success {
-            echo 'Docker image built successfully!'
+            echo 'Docker image built and deployed successfully!'
         }
 
         failure {
