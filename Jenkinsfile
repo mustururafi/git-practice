@@ -3,7 +3,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_HOST = 'tcp://host.docker.internal:2375'
         KUBECONFIG = '/var/jenkins_home/.kube/config'
         IMAGE_NAME = 'rafi-jenkins-demo'
         IMAGE_TAG = "${BUILD_NUMBER}"
@@ -29,6 +28,30 @@ pipeline {
             }
         }
 
+        stage('Trivy Security Scan') {
+            steps {
+                sh '''
+                    trivy image \
+                      --severity HIGH,CRITICAL \
+                      --ignore-unfixed \
+                      --exit-code 0 \
+                      ${IMAGE_NAME}:${IMAGE_TAG}
+                '''
+            }
+        }
+
+        stage('Security Gate') {
+            steps {
+                sh '''
+                    trivy image \
+                      --severity HIGH,CRITICAL \
+                      --ignore-unfixed \
+                      --exit-code 1 \
+                      ${IMAGE_NAME}:${IMAGE_TAG}
+                '''
+            }
+        }
+
         stage('Deploy to Kubernetes') {
             steps {
                 sh 'kubectl get nodes'
@@ -40,11 +63,11 @@ pipeline {
 
     post {
         success {
-            echo 'Docker image built and deployed successfully!'
+            echo 'Image passed Trivy security checks and was deployed successfully!'
         }
 
         failure {
-            echo 'Pipeline failed. Check the logs.'
+            echo 'Pipeline failed. Check the logs and Trivy security report.'
         }
     }
 }
