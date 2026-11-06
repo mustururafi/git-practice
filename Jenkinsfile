@@ -15,6 +15,13 @@ pipeline {
             }
         }
 
+        stage('Automated Tests') {
+            steps {
+                sh 'python3 --version'
+                sh 'python3 test_website.py'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 sh 'docker version'
