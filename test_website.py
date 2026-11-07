@@ -1,25 +1,43 @@
 
+import unittest
 from pathlib import Path
+from xmlrunner import XMLTestRunner
 
-# Website file
-html_file = Path("index.html")
 
-# Test 1: Check file exists
-assert html_file.exists(), "FAIL: index.html not found"
+class WebsiteTests(unittest.TestCase):
 
-# Read HTML content
-content = html_file.read_text(encoding="utf-8")
+    @classmethod
+    def setUpClass(cls):
+        cls.html_file = Path("index.html")
+        cls.content = (
+            cls.html_file.read_text(encoding="utf-8")
+            if cls.html_file.exists()
+            else ""
+        )
 
-# Test 2: Check HTML document declaration
-assert "<!DOCTYPE html>" in content, "FAIL: DOCTYPE missing"
+    def test_file_exists(self):
+        self.assertTrue(self.html_file.exists(), "index.html not found")
 
-# Test 3: Check page title
-assert "<title>Jenkins Docker CI</title>" in content, "FAIL: Page title incorrect"
+    def test_doctype(self):
+        self.assertIn("<!DOCTYPE html>", self.content)
 
-# Test 4: Check heading
-assert "Hello from Jenkins CI/CD - Version 3!" in content, "FAIL: Heading missing"
+    def test_page_title(self):
+        self.assertIn("<title>Jenkins Docker CI</title>", self.content)
 
-# Test 5: Check paragraph
-assert "Docker image built automatically by Jenkins." in content, "FAIL: Paragraph missing"
+    def test_heading(self):
+        self.assertIn(
+            "Hello from Jenkins CI/CD - Version 3!",
+            self.content
+        )
 
-print("PASS: All 5 website tests passed!")
+    def test_paragraph(self):
+        self.assertIn(
+            "Docker image built automatically by Jenkins.",
+            self.content
+        )
+
+
+if __name__ == "__main__":
+    with open("junit-report.xml", "wb") as report:
+        runner = XMLTestRunner(output=report)
+        unittest.main(testRunner=runner, exit=False)
