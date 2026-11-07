@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -19,6 +18,11 @@ pipeline {
             steps {
                 sh 'python3 --version'
                 sh 'python3 test_website.py'
+            }
+            post {
+                always {
+                    junit 'junit-report.xml'
+                }
             }
         }
 
