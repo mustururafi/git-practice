@@ -26,7 +26,7 @@ class WebsiteTests(unittest.TestCase):
 
     def test_heading(self):
         self.assertIn(
-            "Hello from Jenkins CI/CD - Version 999!",
+            "Hello from Jenkins CI/CD - Version 3!",
             self.content
         )
 
