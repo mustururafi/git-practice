@@ -26,7 +26,7 @@ class WebsiteTests(unittest.TestCase):
 
     def test_heading(self):
         self.assertIn(
-            "Hello from Jenkins CI/CD - Version 3!",
+            "Hello from Jenkins CI/CD - Version 999!",
             self.content
         )
 
@@ -40,4 +40,8 @@ class WebsiteTests(unittest.TestCase):
 if __name__ == "__main__":
     with open("junit-report.xml", "wb") as report:
         runner = XMLTestRunner(output=report)
-        unittest.main(testRunner=runner, exit=False)
+        suite = unittest.defaultTestLoader.loadTestsFromTestCase(WebsiteTests)
+        result = runner.run(suite)
+
+    if not result.wasSuccessful():
+        raise SystemExit(1)
