@@ -1,0 +1,7 @@
+﻿apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-prune-test
+  namespace: argocd-nginx
+data:
+  message: "This ConfigMap is for Argo CD pruning practice"
