@@ -1,0 +1,5 @@
+{
+  "name": "staging",
+  "namespace": "file-staging",
+  "replicas": 3
+}

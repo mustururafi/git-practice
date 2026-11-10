@@ -1,0 +1,5 @@
+{
+  "name": "dev",
+  "namespace": "file-dev",
+  "replicas": 1
+}

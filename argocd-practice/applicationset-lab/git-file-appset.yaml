@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: nginx-git-file
+  namespace: argocd
+
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+
+  generators:
+    - git:
+        repoURL: https://github.com/mustururafi/git-practice.git
+        revision: main
+        files:
+          - path: argocd-practice/applicationset-lab/git-file-generator/config/*.json
+
+  template:
+    metadata:
+      name: 'nginx-file-{{.name}}'
+
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/mustururafi/git-practice.git
+        targetRevision: main
+        path: argocd-practice/applicationset-lab/git-file-generator/chart
+        helm:
+          releaseName: 'nginx-file-{{.name}}'
+          parameters:
+            - name: replicaCount
+              value: '{{.replicas}}'
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{.namespace}}'
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
