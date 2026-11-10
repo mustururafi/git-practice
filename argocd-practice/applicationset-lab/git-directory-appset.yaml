@@ -1,0 +1,32 @@
+﻿apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: nginx-git-directory
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/mustururafi/git-practice.git
+        revision: main
+        directories:
+          - path: argocd-practice/applicationset-lab/git-generator/apps/*
+  template:
+    metadata:
+      name: nginx-git-{{path.basename}}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/mustururafi/git-practice.git
+        targetRevision: main
+        path: '{{path}}'
+        helm:
+          releaseName: nginx-{{path.basename}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: git-{{path.basename}}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
