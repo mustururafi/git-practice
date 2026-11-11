@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: training-nginx
+  namespace: argocd
+
+spec:
+  project: devops-training
+
+  source:
+    repoURL: https://github.com/mustururafi/git-practice.git
+    targetRevision: main
+    path: argocd-practice/applicationset-lab/git-file-generator/chart
+    helm:
+      releaseName: training-nginx
+      valueFiles:
+        - values-training.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: training-dev
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    

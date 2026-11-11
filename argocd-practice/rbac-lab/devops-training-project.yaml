@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: devops-training
+  namespace: argocd
+spec:
+  description: DevOps training project with restricted deployment access
+
+  sourceRepos:
+    - https://github.com/mustururafi/git-practice.git
+
+  destinations:
+    - namespace: training-dev
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist: []
+
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
