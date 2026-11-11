@@ -1,0 +1,16 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: employee-web-service
+  namespace: sync-waves-lab
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  type: ClusterIP
+  selector:
+    app: employee-web
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP

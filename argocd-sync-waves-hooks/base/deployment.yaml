@@ -1,0 +1,25 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-web
+  namespace: sync-waves-lab
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: employee-web
+  template:
+    metadata:
+      labels:
+        app: employee-web
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: employee-app-config
