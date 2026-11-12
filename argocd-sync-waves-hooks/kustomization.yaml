@@ -6,3 +6,7 @@ resources:
   - base/configmap.yaml
   - base/deployment.yaml
   - base/service.yaml
+  - hooks/presync-job.yaml
+  - hooks/sync-job.yaml
+  - hooks/postsync-job.yaml
+  - hooks/syncfail-job.yaml
