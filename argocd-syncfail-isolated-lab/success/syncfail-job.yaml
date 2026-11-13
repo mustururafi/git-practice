@@ -17,4 +17,4 @@ spec:
           command:
             - sh
             - -c
-            - echo "SYNCFAIL_HOOK_EXECUTED: syncfail-isolated-lab"
+            - 'echo "SYNCFAIL_HOOK_EXECUTED: syncfail-isolated-lab"'
