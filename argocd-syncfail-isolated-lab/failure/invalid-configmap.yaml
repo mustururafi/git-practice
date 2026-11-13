@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: syncfail-invalid
+  namespace: syncfail-isolated-lab
+data:
+  invalid-value: 42

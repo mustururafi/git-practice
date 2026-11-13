@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: syncfail-stable
+  namespace: syncfail-isolated-lab
+data:
+  state: baseline

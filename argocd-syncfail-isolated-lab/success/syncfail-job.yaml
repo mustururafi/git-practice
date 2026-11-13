@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: syncfail-proof
+  namespace: syncfail-isolated-lab
+  annotations:
+    argocd.argoproj.io/hook: SyncFail
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: proof
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - echo "SYNCFAIL_HOOK_EXECUTED: syncfail-isolated-lab"
