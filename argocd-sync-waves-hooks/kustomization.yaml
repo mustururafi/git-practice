@@ -10,3 +10,5 @@ resources:
   - hooks/sync-job.yaml
   - hooks/postsync-job.yaml
   - hooks/syncfail-job.yaml
+  - base/syncfail-demo.yaml
+  - base/syncfail-api-test.yaml
