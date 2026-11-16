@@ -8,4 +8,4 @@ metadata:
 data:
   APP_NAME: "Employee Management"
   APP_ENV: "Development"
-  APP_VERSION: "1.1"
+  APP_VERSION: "1.0"
