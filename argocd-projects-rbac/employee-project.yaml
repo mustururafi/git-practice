@@ -1,0 +1,29 @@
+
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: employee-restricted
+  namespace: argocd
+spec:
+  description: Restricted project for Employee Management RBAC practical
+
+  sourceRepos:
+    - https://github.com/mustururafi/git-practice.git
+
+  destinations:
+    - namespace: employee-rbac-lab
+      server: https://kubernetes.default.svc
+
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+
+  clusterResourceWhitelist: []
+
+  namespaceResourceBlacklist:
+    - group: ""
+      kind: Secret

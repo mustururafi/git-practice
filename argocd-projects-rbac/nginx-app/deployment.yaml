@@ -1,0 +1,21 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-rbac-nginx
+  namespace: employee-rbac-lab
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: employee-rbac-nginx
+  template:
+    metadata:
+      labels:
+        app: employee-rbac-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - containerPort: 80
