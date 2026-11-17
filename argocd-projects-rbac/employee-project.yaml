@@ -1,4 +1,3 @@
-
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -22,7 +21,9 @@ spec:
     - group: apps
       kind: Deployment
 
-  clusterResourceWhitelist: []
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
 
   namespaceResourceBlacklist:
     - group: ""
